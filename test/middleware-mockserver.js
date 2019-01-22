@@ -207,6 +207,16 @@ var mocks = {
 		var body = fs.readFileSync( __dirname + "/data/csp.include.html" ).toString();
 		resp.end( body );
 	},
+	cspNonce: function( req, resp ) {
+		var testParam = req.query.test ? "-" + req.query.test : "";
+		resp.writeHead( 200, {
+			"Content-Type": "text/html",
+			"Content-Security-Policy": "script-src 'nonce-jquery+hardcoded+nonce'; report-uri /base/test/data/mock.php?action=cspLog"
+		} );
+		var body = fs.readFileSync(
+			__dirname + "/data/csp-nonce" + testParam + ".html" ).toString();
+		resp.end( body );
+	},
 	cspLog: function( req, resp ) {
 		cspLog = "error";
 		resp.writeHead( 200 );
